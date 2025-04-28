@@ -1,35 +1,43 @@
 services:
     www:
         build: .
-        ports: 
+        ports:
             - "80:80"
         volumes:
             - ./www:/var/www/html/
-        links:
-            - db
         networks:
-            - default
+            - my_network
+        depends_on:
+            - db
+
     db:
         image: mysql:8.4
-        ports: 
+        ports:
             - "3306:3306"
         command: --mysql_native_password=ON
         environment:
             MYSQL_DATABASE: myDb
             MYSQL_USER: user
             MYSQL_PASSWORD: test1
-            MYSQL_ROOT_PASSWORD: Q`10p09`
+            MYSQL_ROOT_PASSWORD: AdminPW
         volumes:
             - ./dump:/docker-entrypoint-initdb.d
             - ./conf:/etc/mysql/conf.d
             - persistent:/var/lib/mysql
         networks:
-            - default
+            - my_network
+
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        links: 
-            - db:db
         ports:
-            - 8000:80
+            - "8000:80"
+        networks:
+            - my_network
+        depends_on:
+            - db
+
 volumes:
     persistent:
+
+networks:
+    my_network:

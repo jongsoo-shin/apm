@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+User-agent: *
+Disllow: /data/
+Disllow: /mng/
+Disllow: /layout/
+Disllow: /lib/
+Disllow: /mod/
+Disllow: /plugin/
